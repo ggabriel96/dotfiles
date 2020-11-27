@@ -1,0 +1,114 @@
+{
+    // -------
+    // General
+    // -------
+    "height": 28,
+    "layer": "top",
+    "position": "top",
+    // -------
+    // Modules
+    // -------
+    "modules-left": [
+        "sway/workspaces",
+        "sway/mode"
+    ],
+    "modules-center": [
+        "sway/window"
+    ],
+    "modules-right": [
+        "cpu",
+        "memory",
+        "temperature",
+        "network",
+        "pulseaudio",
+        "battery",
+        "clock",
+        "tray"
+    ],
+    // ---------------------
+    // Modules customization
+    // ---------------------
+    "sway/workspaces": {
+        "disable-scroll": false,
+        "disable-scroll-wraparound": true,
+        "enable-bar-scroll": false
+    },
+    "sway/mode": {
+        "format": "",
+        "tooltip": true
+    },
+    "sway/window": {
+        "max-length": 48
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "tooltip": true
+    },
+    "memory": {
+        "format": " {percentage}%"
+    },
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "{icon} {temperatureC}°C",
+        "format-icons": [
+            "",
+            "",
+            ""
+        ]
+    },
+    "network": {
+        "format": " {ifname}",
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": "",
+        "format-disconnected": " ",
+        "tooltip": true,
+        "tooltip-format": " {ifname}",
+        "tooltip-format-wifi": "{ipaddr}/{cidr} @ {essid} ({ifname})",
+        "tooltip-format-ethernet": "{ipaddr}/{cidr} @ {ifname}",
+        "tooltip-format-diconnected": "Diconnected",
+        "on-click": "nm-connection-editor"
+    },
+    "pulseaudio": {
+        "scroll-step": 5,
+        "format": "{icon} {volume}% {format_source}",
+        "format-muted": " {format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "",
+        "format-bluetooth": " {icon} {volume}% {format_source}",
+        "format-bluetooth-muted": "  {format_source}",
+        "format-icons": {
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "on-click": "pavucontrol"
+    },
+    "battery": {
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-time": "{H} h {M} min",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "states": {
+            "warning": 30,
+            "critical": 10
+        }
+    },
+    "clock": {
+        "format": "{:%b %d %a %H:%M}",
+        "tooltip": true,
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "today-format": "<b>{}</b>"
+    },
+    "tray": {
+        "spacing": 0,
+        "icon-size": 16
+    }
+}

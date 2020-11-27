@@ -1,0 +1,46 @@
+# modifier keys
+set $super Mod4
+set $lalt Mod1
+set $ralt Mod5
+
+# window focus and navigation
+set $lnav $lalt
+set $rnav $ralt
+
+# open launcher and apps
+set $launch $super
+
+# window "movement"
+set $mov Shift
+
+# system control
+set $sys Control
+
+# Direction keys
+set $left h
+set $down j
+set $up k
+set $right l
+
+# Media keys
+set $volUp XF86AudioRaiseVolume
+set $volDown XF86AudioLowerVolume
+set $volMute XF86AudioMute
+set $brightUp XF86MonBrightnessUp
+set $brightDown XF86MonBrightnessDown
+
+# Note: pass the final command to swaymsg so that
+# the resulting window can be opened on the original
+# workspace that the command was run on.
+set $menu wofi -f --show drun | xargs swaymsg exec --
+set $term alacritty
+
+set $print Print
+set $printArea Shift+$print
+set $printCopy Control+$print
+set $printCopyArea Control+Shift+$print
+
+set $lockCmd 'swaylock --daemonize --show-failed-attempts --indicator-caps-lock --color 000000'
+set $suspendCmd 'systemctl suspend'
+set $rebootCmd 'systemctl reboot'
+set $poweroffCmd 'systemctl poweroff'

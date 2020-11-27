@@ -1,0 +1,110 @@
+/*
+ * Animations
+ **/
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: black;
+    }
+}
+
+/*
+ * General
+ **/
+
+* {
+    border: none;
+    border-radius: 0;
+    color: white;
+    font-family: "Fira Code", "Font Awesome 5 Free";
+    font-size: 13px;
+}
+
+window#waybar.hidden,
+window#waybar {
+    background: black;
+}
+
+window#waybar.empty {
+    background: transparent;
+    text-shadow: 1px 1px 3px black;
+    -gtk-icon-shadow: 1px 1px 3px black;
+}
+
+/*
+ * Sway
+ **/
+
+#window {
+    font-weight: bold;
+}
+
+#mode,
+#workspaces button {
+    padding: 0 5px;
+    background: transparent;
+    text-shadow: inherit;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+#workspaces button:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#workspaces button.focused,
+#workspaces button.focused:hover {
+    box-shadow: inset 0 2px white;
+}
+
+#workspaces button.focused:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/*
+ * Modules
+ **/
+
+/* .modules-right { */
+#mpd,
+#idle_inhibitor,
+#cpu,
+#memory,
+#temperature,
+#network,
+#pulseaudio,
+#backlight,
+#battery,
+#clock {
+    padding: 0 4px;
+    margin: 0 4px;
+}
+
+#tray image {
+    padding: 6px;
+}
+
+/* #tray widget:not(:first-child) image {
+    margin-left: -8px;
+} */
+
+#clock {
+    font-weight: bold;
+}
+
+/*
+ * "Warnings"
+ **/
+
+#workspaces button.urgent {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+#battery.critical:not(.charging) {
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}

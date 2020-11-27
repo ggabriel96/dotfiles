@@ -1,0 +1,6 @@
+font:
+    family: Fira Code
+    size: 12
+key_bindings:
+    - { key: N, mods: Control|Shift, action: SpawnNewInstance }
+

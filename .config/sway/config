@@ -1,0 +1,11 @@
+# Read `man 5 sway` for a complete reference.
+
+include ./startup
+include ./vars
+include ./output
+include ./input
+include ./keybindings
+include ./idle
+include ./styling
+
+include /etc/sway/config.d/*

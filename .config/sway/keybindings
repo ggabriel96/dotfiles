@@ -1,0 +1,187 @@
+########################################
+# +----------------+
+# | System control |
+# +----------------+
+
+# Reload the configuration file
+bindsym $launch+$sys+f5 reload
+
+# Dismiss notifications
+bindsym $launch+$sys+Backspace exec makoctl dismiss -a
+
+# Lock
+bindsym $launch+$sys+l exec $lockCmd
+
+# Logout
+bindsym $launch+$sys+e exec swaynag -t warning -m 'Logout?' -b 'Yes' 'swaymsg exit'
+
+# Suspend
+bindsym $launch+$sys+s exec swaynag -t warning -m 'Suspend?' -b 'Yes' $suspendCmd
+
+# Reboot
+bindsym $launch+$sys+r exec swaynag -t warning -m 'Reboot?' -b 'Yes' $rebootCmd
+
+# Poweroff
+bindsym $launch+$sys+p exec swaynag -t warning -m 'Power off?' -b 'Yes' $poweroffCmd
+
+########################################
+# +---------+
+# | Windows |
+# +---------+
+
+# Move the focus
+bindsym $lnav+$up focus up
+bindsym $lnav+$down focus down
+bindsym $lnav+$left focus left
+bindsym $lnav+$right focus right
+
+# Move focus to the parent container
+#bindsym $lnav+p focus parent
+
+# Move the focused window
+bindsym $lnav+$mov+$up move up
+bindsym $lnav+$mov+$down move down
+bindsym $lnav+$mov+$left move left
+bindsym $lnav+$mov+$right move right
+
+bindsym $rnav+$mov+f fullscreen
+
+# Swap focus between the tiling area and the floating area
+bindsym $rnav+space focus mode_toggle
+
+# Toggle the current window between tiling and floating mode
+bindsym $rnav+$mov+space floating toggle
+
+########################################
+# +--------------+
+# | Applications |
+# +--------------+
+
+bindsym $launch+Slash exec $menu
+
+bindsym $launch+k kill
+
+bindsym $launch+Return exec $term
+#bindsym $launch+n exec nautilus
+#bindsym $launch+c exec google-chrome
+#bindsym $launch+s exec slack
+#bindsym $launch+v exec code -n
+#bindsym $launch+m exec flatpak run com.spotify.Client
+
+########################################
+# +------------+
+# | Workspaces |
+# +------------+
+
+# Drag floating windows by holding down $super and left mouse button.
+# Resize them with right mouse button + $super.
+# Despite the name, also works for non-floating windows.
+# Change normal to inverse to use left mouse button for resizing and right
+# mouse button for dragging.
+floating_modifier $lnav normal
+
+bindsym $rnav+w workspace Web
+bindsym $rnav+$mov+w move container to workspace Web
+
+bindsym $rnav+c workspace CLI
+bindsym $rnav+$mov+c move container to workspace CLI
+
+bindsym $rnav+d workspace Dev
+bindsym $rnav+$mov+d move container to workspace Dev
+
+bindsym $rnav+1 workspace 1
+bindsym $rnav+2 workspace 2
+bindsym $rnav+3 workspace 3
+bindsym $rnav+4 workspace 4
+bindsym $rnav+5 workspace 5
+bindsym $rnav+6 workspace 6
+bindsym $rnav+7 workspace 7
+bindsym $rnav+8 workspace 8
+bindsym $rnav+9 workspace 9
+bindsym $rnav+0 workspace 10
+
+# Move focused container to workspace
+bindsym $rnav+$mov+1 move container to workspace 1
+bindsym $rnav+$mov+2 move container to workspace 2
+bindsym $rnav+$mov+3 move container to workspace 3
+bindsym $rnav+$mov+4 move container to workspace 4
+bindsym $rnav+$mov+5 move container to workspace 5
+bindsym $rnav+$mov+6 move container to workspace 6
+bindsym $rnav+$mov+7 move container to workspace 7
+bindsym $rnav+$mov+8 move container to workspace 8
+bindsym $rnav+$mov+9 move container to workspace 9
+bindsym $rnav+$mov+0 move container to workspace 10
+
+########################################
+# +--------+
+# | Layout |
+# +--------+
+
+# You can "split" the current object of your focus
+# splith cuts vertically so it grows horizontally (windows as columns)
+# splitv cuts horizontally so it grows vertically (windows as rows)
+# I swapped them because I like to think about the orientation of the split, not the layout
+bindsym $launch+$rnav+v splith
+bindsym $launch+$lnav+h splitv
+
+# Switch the current container between different layout styles
+bindsym $launch+$rnav+s layout stacking
+bindsym $launch+$rnav+t layout tabbed
+bindsym $launch+$lnav+p layout toggle split
+
+########################################
+# +----------+
+# | Resizing |
+# +----------+
+mode "resize" {
+    bindsym $left resize shrink width 5ppt
+    bindsym $right resize grow width 5ppt
+    bindsym $up resize grow height 5ppt
+    bindsym $down resize shrink height 5ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $rnav+$mov+r mode "resize"
+
+########################################
+# +------------+
+# | Scratchpad |
+# +------------+
+
+# Sway has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
+
+# Move the currently focused window to the scratchpad
+bindsym $rnav+$mov+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $lnav+minus scratchpad show
+
+########################################
+# +-------+
+# | Sound |
+# +-------+
+bindsym $volUp exec pulsemixer --change-volume +5 --get-volume --max-volume 100 | awk '{print $1}' > $SWAYSOCK.wob
+bindsym $volDown exec pulsemixer --change-volume -5 --get-volume | awk '{print $1}' > $SWAYSOCK.wob
+bindsym $volMute exec pulsemixer --toggle-mute --get-mute > $SWAYSOCK.wob
+
+########################################
+# +-------+
+# | Light |
+# +-------+
+bindsym $brightUp exec light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob
+bindsym $brightDown exec light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob
+
+########################################
+# +----------------+
+# | Screen capture |
+# +----------------+
+ 
+bindsym $print exec grim $(xdg-user-dir PICTURES)/grim_$(date +"%Y%m%d%H%M%S").png
+bindsym $printArea exec grim -g "$(slurp)" $(xdg-user-dir PICTURES)/grim_$(date +"%Y%m%d%H%M%S").png
+
+bindsym $printCopy exec grim - | wl-copy
+bindsym $printCopyArea exec grim -g "$(slurp)" - | wl-copy
