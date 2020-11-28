@@ -1,20 +1,16 @@
 # You can get the names of your outputs by running `swaymsg -t get_outputs`
 
-#set $externalMonitor HDMI-A-1
-set $externalMonitor DP-1
+set $externalMonitor HDMI-A-1
+#set $externalMonitor DP-1
 output $externalMonitor mode 1920x1080@60Hz pos 0 0
-output $externalMonitor subpixel rgb
-output $externalMonitor bg ~/Pictures/wallpaper.jpg fill
-workspace Web output $externalMonitor
-workspace CLI output $externalMonitor
-workspace Dev output $externalMonitor
+workspace 1 output $externalMonitor
 
 set $builtinMonitor eDP-1
-output $builtinMonitor scale 2.5
-output $builtinMonitor pos 0 1080
-output $builtinMonitor subpixel rgb
-output $builtinMonitor bg ~/Pictures/wallpaper.jpg fill
+output $builtinMonitor scale 1 pos 0 1080
 workspace 10 output $builtinMonitor
+
+output "*" subpixel rgb
+output "*" bg ~/Pictures/wallpaper.jpg fill
 
 # Clamshell mode, AKA closed display mode
 bindswitch --reload --locked lid:on output $builtinMonitor disable
