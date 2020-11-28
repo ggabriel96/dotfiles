@@ -1,4 +1,4 @@
-exec mako --icons 1 --markup 1 --actions 1 --background-color "#444444" --border-color "#000000"
+exec mako
 exec gammastep-indicator
 exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | wob
 exec flatpak run com.dropbox.Client
