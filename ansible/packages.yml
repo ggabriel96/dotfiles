@@ -161,6 +161,31 @@
           - code
         state: latest
 
+- name: Install SpaceVim
+  hosts: localhost
+  vars_files:
+    - vars/packages.yml
+  tags:
+    - dev
+    - editors
+    - packages
+  tasks:
+    - name: Download
+      ansible.builtin.get_url:
+        url: https://spacevim.org/install.sh
+        dest: /tmp/spacevim-install.sh
+        mode: "0755"
+
+    - name: Install
+      ansible.builtin.command:
+        argv:
+          - /tmp/spacevim-install.sh
+
+    - name: Clean up
+      ansible.builtin.file:
+        path: /tmp/spacevim-install.sh
+        state: absent
+
 - name: Install Zoom
   hosts: Fedora
   become: true
