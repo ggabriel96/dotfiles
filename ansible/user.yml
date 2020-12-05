@@ -1,7 +1,6 @@
 ---
 - name: Change shell
   hosts: localhost
-  become: true
   vars_files:
     - vars/user.yml
   tags:
@@ -10,9 +9,18 @@
     - user
     - zsh
   tasks:
-    - ansible.builtin.user:
-        name: "{{ ansible_env.USER }}"
-        shell: "{{ change_shell_target }}"
+    - name: Get path to chosen shell
+      ansible.builtin.command:
+        argv:
+          - which
+          - "{{ change_shell_target }}"
+      register: shell_path
+
+    - name: Change shell
+      become: true
+      ansible.builtin.user:
+        name: "{{ ansible_env.USERNAME }}"
+        shell: "{{ shell_path.stdout }}"
 
 - name: Create SSH key
   hosts: localhost
