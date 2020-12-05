@@ -1,2 +1,3 @@
 ---
 cloudsdk_install_dir: "{{ ansible_env.HOME }}"
+miniconda_install_dir: "{{ ansible_env.HOME }}"

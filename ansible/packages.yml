@@ -30,6 +30,42 @@
       ansible.builtin.dnf:
         autoremove: yes
 
+- name: Install Miniconda
+  hosts: localhost
+  vars_files:
+    - vars/packages.yml
+  tags:
+    - dev
+    - package-managers
+    - packages
+    - python
+  tasks:
+    - name: Check if already installed
+      ansible.builtin.stat:
+        path: "{{ miniconda_install_dir }}/miniconda3/"
+      register: is_miniconda_installed
+
+    - name: End play if already installed
+      meta: end_play
+      when: is_miniconda_installed.stat.exists
+
+    - name: Download
+      ansible.builtin.get_url:
+        url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        dest: /tmp/miniconda-install.sh
+        mode: "0755"
+
+    - name: Install
+      ansible.builtin.command:
+        argv:
+          - /tmp/miniconda-install.sh
+          - -b
+
+    - name: Clean up
+      ansible.builtin.file:
+        path: /tmp/miniconda-install.sh
+        state: absent
+
 - name: Install Fonts
   hosts: Fedora
   become: true
