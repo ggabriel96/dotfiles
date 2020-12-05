@@ -36,8 +36,8 @@
         mode: "0755"
 
     - name: Run install script
-      shell: echo | {{ install_script }} > {{ install_logs }}
-      args:
+      shell:
+        cmd: echo | {{ install_script }} > {{ install_logs }}
         creates: /home/linuxbrew/
 
     - name: Remove install script
