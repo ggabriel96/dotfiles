@@ -76,6 +76,18 @@
     - git
     - user
   tasks:
+    - name: Check required variables exist and have values
+      ansible.builtin.assert:
+        that:
+          - "{{ item }} is defined"
+          - "{{ item }} != None"
+          - "{{ item }} | length > 0"
+        fail_msg: "Variable {{ item }} is required. Please set it on vars/user.yml"
+        success_msg: "Required variable {{ item }} is defined"
+      loop:
+        - user_name
+        - user_email
+
     - name: Set global user.name
       ansible.builtin.command:
         argv:
@@ -84,6 +96,7 @@
           - --global
           - user.name
           - "{{ user_name }}"
+
     - name: Set global user.email
       ansible.builtin.command:
         argv:
