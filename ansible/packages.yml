@@ -58,7 +58,7 @@
   tasks:
     - name: Check if already installed
       ansible.builtin.stat:
-        path: "{{ cloudsdk_install_dir }}"
+        path: "{{ cloudsdk_install_dir }}/google-cloud-sdk/"
       register: is_cloudsdk_installed
 
     - name: End play if already installed
