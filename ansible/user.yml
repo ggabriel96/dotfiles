@@ -22,6 +22,25 @@
         name: "{{ ansible_env.USERNAME }}"
         shell: "{{ shell_path.stdout }}"
 
+- name: Link config files
+  hosts: localhost
+  tags:
+    - user
+    - shell
+    - sway
+  tasks:
+    - ansible.builtin.file:
+        src: "{{ playbook_dir }}/../.config/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.config/{{ item }}"
+        state: link
+      loop:
+        - alacritty
+        - fish
+        - gammastep
+        - mako
+        - sway
+        - waybar
+
 - name: Create SSH key
   hosts: localhost
   vars_files:
