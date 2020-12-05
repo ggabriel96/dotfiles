@@ -121,7 +121,6 @@
 
 - name: Setup Flatpak and install packages
   hosts: Fedora
-  become: true
   tags:
     - flatpak
     - package-managers
