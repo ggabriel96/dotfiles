@@ -1,0 +1,6 @@
+---
+change_shell_target: fish
+user_email:
+user_name:
+ssh_key_type: ed25519
+ssh_key_file: ~/.ssh/id_ed25519

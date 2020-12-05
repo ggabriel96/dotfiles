@@ -1,0 +1,13 @@
+---
+- name: Learn about localhost
+  hosts: localhost
+  tasks:
+    - name: Classify hosts depending on their OS distribution
+      group_by:
+        key: "{{ ansible_facts['distribution'] }}"
+
+- import_playbook: packages.yml
+- import_playbook: docker.yml
+- import_playbook: user.yml
+- import_playbook: sway.yml
+# - import_playbook: homebrew.yml

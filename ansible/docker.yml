@@ -1,0 +1,50 @@
+---
+- name: Install Docker and Compose
+  hosts: Fedora
+  become: true
+  tags:
+    - dev
+    - docker
+  tasks:
+    - name: Set CGroups to V1
+      ansible.builtin.command:
+        argv:
+          - grubby
+          - --update-kernel=ALL
+          - --args="systemd.unified_cgroup_hierarchy=0"
+
+    - name: Add docker0 interface to trusted zone
+      ansible.builtin.command:
+        argv:
+          - firewall-cmd
+          - --permanent
+          - --zone=trusted
+          - --add-interface=docker0
+
+    - name: Add masquerading to FedoraWorkstation zone
+      ansible.builtin.command:
+        argv:
+          - firewall-cmd
+          - --permanent
+          - --zone=FedoraWorkstation
+          - --add-masquerade
+
+    - name: Install
+      ansible.builtin.dnf:
+        name:
+          - moby-engine
+          - docker-compose
+        state: latest
+
+    - name: Enable docker service
+      ansible.builtin.systemd:
+        name: docker
+        enabled: yes
+        masked: no
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ ansible_env.USER }}"
+        groups: docker
+        append: yes
+      ignore_errors: yes

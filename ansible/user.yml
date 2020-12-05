@@ -1,0 +1,67 @@
+---
+- name: Change shell
+  hosts: localhost
+  become: true
+  vars_files:
+    - vars/user.yml
+  tags:
+    - fish
+    - shell
+    - user
+    - zsh
+  tasks:
+    - ansible.builtin.user:
+        name: "{{ ansible_env.USER }}"
+        shell: "{{ change_shell_target }}"
+
+- name: Create SSH key
+  hosts: localhost
+  vars_files:
+    - vars/user.yml
+  tags:
+    - dev
+    - git
+    - ssh
+    - user
+  tasks:
+    - ansible.builtin.user:
+        name: "{{ ansible_env.USER }}"
+        generate_ssh_key: yes
+        ssh_key_type: "{{ ssh_key_type }}"
+        ssh_key_file: "{{ ssh_key_file }}"
+        ssh_key_comment: "{{ user_email }}"
+
+    - name: Start SSH agent
+      shell: eval "$(ssh-agent -s)"
+
+    - name: Add key to SSH agent
+      ansible.builtin.command:
+        argv:
+          - ssh-add
+          - "{{ ssh_key_file }}"
+
+- name: Configure git
+  hosts: localhost
+  vars_files:
+    - vars/user.yml
+  tags:
+    - dev
+    - git
+    - user
+  tasks:
+    - name: Set global user.name
+      ansible.builtin.command:
+        argv:
+          - git
+          - config
+          - --global
+          - user.name
+          - "{{ user_name }}"
+    - name: Set global user.email
+      ansible.builtin.command:
+        argv:
+          - git
+          - config
+          - --global
+          - user.email
+          - "{{ user_email }}"

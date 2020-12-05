@@ -1,0 +1,25 @@
+---
+- name: Install Sway and related packages
+  hosts: Fedora
+  become: true
+  tags:
+    - sway
+  tasks:
+    - ansible.builtin.dnf:
+        name:
+          - blueman
+          - gammastep
+          - gammastep-indicator
+          - grim
+          - light
+          - mako
+          - pavucontrol
+          - slurp
+          - sway
+          - swayidle
+          - swaylock
+          - waybar
+          - wl-clipboard
+          - wob
+          - wofi
+        state: latest

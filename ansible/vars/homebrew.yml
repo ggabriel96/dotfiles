@@ -1,0 +1,4 @@
+---
+install_script: /tmp/homebrew-install.sh
+install_logs: /tmp/linuxbrew-install-logs.txt
+install_path: /home/linuxbrew/.linuxbrew/

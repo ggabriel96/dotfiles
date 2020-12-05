@@ -1,0 +1,163 @@
+---
+- name: Install general packages
+  hosts: Fedora
+  become: true
+  tags:
+    - packages
+  tasks:
+    - name: DNF update all
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: Install general packages
+      ansible.builtin.dnf:
+        name:
+          - chromium
+          - clang
+          - dnf-plugins-core
+          - fedora-workstation-repositories
+          - fish
+          - gcc-c++
+          - gnome-tweaks
+          - htop
+          - make
+          - neovim
+          - zsh
+        state: latest
+
+    - name: Clean up
+      ansible.builtin.dnf:
+        autoremove: yes
+
+- name: Install Fonts
+  hosts: Fedora
+  become: true
+  tags:
+    - fonts
+    - packages
+  tasks:
+    - ansible.builtin.dnf:
+        name:
+          - fira-code-fonts
+          - fontawesome-fonts
+          - google-noto-sans-fonts
+          - google-noto-serif-fonts
+          - google-noto-emoji-fonts
+          - google-noto-emoji-color-fonts
+        state: latest
+
+- name: Install Google Cloud SDK
+  hosts: localhost
+  vars_files:
+    - vars/packages.yml
+  tags:
+    - dev
+    - gcp
+    - packages
+  tasks:
+    - name: Check if already installed
+      ansible.builtin.stat:
+        path: "{{ cloudsdk_install_dir }}"
+      register: is_cloudsdk_installed
+
+    - name: End play if already installed
+      meta: end_play
+      when: is_cloudsdk_installed.stat.exists
+
+    - name: Download
+      ansible.builtin.get_url:
+        url: https://sdk.cloud.google.com
+        dest: /tmp/cloudsdk-install.sh
+        mode: "0755"
+
+    - name: Install
+      ansible.builtin.command:
+        argv:
+          - /tmp/cloudsdk-install.sh
+          - --disable-prompts
+          - --install-dir={{ cloudsdk_install_dir }}
+
+    - name: Clean up
+      ansible.builtin.file:
+        path: /tmp/cloudsdk-install.sh
+        state: absent
+
+- name: Install Snap
+  hosts: Fedora
+  become: true
+  tags:
+    - package-managers
+    - packages
+    - snap
+  tasks:
+    - ansible.builtin.dnf:
+        name:
+          - snapd
+
+    - name: Symlink
+      ansible.builtin.file:
+        src: /var/lib/snapd/snap
+        dest: /snap
+        state: link
+
+# https://code.visualstudio.com/docs/setup/linux#_rhel-fedora-and-centos-based-distributions
+- name: Install VS Code
+  hosts: Fedora
+  become: true
+  tags:
+    - dev
+    - editors
+    - packages
+  tasks:
+    - name: Add GPG key
+      ansible.builtin.rpm_key:
+        key: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Setup repository
+      shell: |
+        cat <<- EOF > /etc/yum.repos.d/vscode.repo
+        [code]
+        name=Visual Studio Code
+        baseurl=https://packages.microsoft.com/yumrepos/vscode
+        enabled=1
+        gpgcheck=1
+        gpgkey=https://packages.microsoft.com/keys/microsoft.asc
+        EOF
+      args:
+        creates: /etc/yum.repos.d/vscode.repo
+
+    - ansible.builtin.dnf:
+        name:
+          - code
+        state: latest
+
+- name: Install Zoom
+  hosts: Fedora
+  become: true
+  tags:
+    - meeting
+    - packages
+    - video
+  tasks:
+    - name: Add GPG key
+      ansible.builtin.rpm_key:
+        key: https://zoom.us/linux/download/pubkey
+        state: present
+
+    - name: Download package
+      ansible.builtin.get_url:
+        url: https://zoom.us/client/latest/zoom_x86_64.rpm
+        dest: /tmp/zoom.rpm
+
+    - name: Install
+      ansible.builtin.dnf:
+        name:
+          - /tmp/zoom.rpm
+        state: latest
+
+    - name: Clean up
+      ansible.builtin.file:
+        path: /tmp/zoom.rpm
+        state: absent

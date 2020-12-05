@@ -1,0 +1,78 @@
+---
+- name: Install Homebrew
+  hosts: localhost
+  vars_files:
+    - vars/homebrew.yml
+  tags:
+    - homebrew
+    - package-managers
+    - sway
+  tasks:
+    - name: Install dependencies (Fedora family)
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - curl
+          - file
+          - git
+          - libxcrypt-compat # needed by Fedora 30 and up
+          - "@Development Tools"
+      when: ansible_facts["distribution"] == "Fedora"
+
+    - name: Install dependencies (Ubuntu family)
+      become: true
+      ansible.builtin.apt:
+        name:
+          - build-essential
+          - curl
+          - file
+          - git
+      when: ansible_facts["distribution"] == "Ubuntu"
+
+    - name: Download install script
+      get_url:
+        url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+        dest: "{{ install_script }}"
+        mode: "0755"
+
+    - name: Run install script
+      shell: echo | {{ install_script }} > {{ install_logs }}
+      args:
+        creates: /home/linuxbrew/
+
+    - name: Remove install script
+      ansible.builtin.file:
+        path: "{{ install_script }}"
+        state: absent
+
+    - name: Post-installation steps
+      ansible.builtin.debug:
+        msg: |
+          Take a look at {{ install_logs }}, there is important information there!
+          Also make sure you run `{{ install_path }}/bin/brew shellenv`
+          with your shell of choice to add brew to your environment.
+        verbosity: 0
+
+
+- name: Install Font Awesome 5
+  hosts: localhost
+  vars_files:
+    - vars/homebrew.yml
+  tags:
+    - fonts
+    - homebrew
+    - sway
+  tasks:
+    - name: Add Linuxbrew font respository
+      ansible.builtin.command:
+        argv:
+          - "{{ install_path }}/bin/brew"
+          - tap
+          - linuxbrew/fonts
+
+    - name: Install Font Awesome
+      ansible.builtin.command:
+        argv:
+          - "{{ install_path }}/bin/brew"
+          - install
+          - font-fontawesome
