@@ -83,7 +83,7 @@
         path: /tmp/cloudsdk-install.sh
         state: absent
 
-- name: Install Snap
+- name: Setup Snap
   hosts: Fedora
   become: true
   tags:
