@@ -56,7 +56,7 @@
         generate_ssh_key: yes
         ssh_key_type: "{{ ssh_key_type }}"
         ssh_key_file: "{{ ssh_key_file }}"
-        ssh_key_comment: "{{ user_email }}"
+        ssh_key_comment: "{{ user_email | default(omit) }}"
 
     - name: Start SSH agent
       shell: eval "$(ssh-agent -s)"
