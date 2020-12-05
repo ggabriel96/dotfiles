@@ -1,3 +1,10 @@
 ---
 cloudsdk_install_dir: "{{ ansible_env.HOME }}"
+is_cloudsdk_installed:
+  stat:
+    exists: false
+
 miniconda_install_dir: "{{ ansible_env.HOME }}"
+is_miniconda_installed:
+  stat:
+    exists: false
