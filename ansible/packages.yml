@@ -83,6 +83,34 @@
         path: /tmp/cloudsdk-install.sh
         state: absent
 
+- name: Setup Flatpak and install packages
+  hosts: Fedora
+  become: true
+  tags:
+    - flatpak
+    - package-managers
+    - packages
+  tasks:
+    - name: Add Flathub repository
+      ansible.builtin.command:
+        argv:
+          - flatpak
+          - remote-add
+          - --if-not-exists
+          - flathub
+          - https://flathub.org/repo/flathub.flatpakrepo
+    - name: Install packages
+      ansible.builtin.command:
+        argv:
+          - flatpak
+          - install
+          - flathub
+          - -y
+          - com.dropbox.Client
+          - com.github.calo001.fondo
+          - com.spotify.Client
+          - org.videolan.VLC
+
 - name: Setup Snap
   hosts: Fedora
   become: true
