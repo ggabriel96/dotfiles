@@ -13,7 +13,7 @@
       ansible.builtin.command:
         argv:
           - which
-          - "{{ change_shell_target }}"
+          - "{{ login_shell }}"
       register: shell_path
 
     - name: Change shell
@@ -29,6 +29,11 @@
     - shell
     - sway
   tasks:
+    - name: Link .bash_profile
+      ansible.builtin.file:
+        src: "{{ playbook_dir }}/../home/.bash_profile"
+        dest: "{{ ansible_env.HOME }}/.bash_profile"
+        state: link
     - ansible.builtin.file:
         src: "{{ playbook_dir }}/../home/.config/{{ item }}"
         dest: "{{ ansible_env.HOME }}/.config/{{ item }}"

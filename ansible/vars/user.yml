@@ -1,5 +1,5 @@
 ---
-change_shell_target: fish
+login_shell: bash
 user_email:
 user_name:
 ssh_key_type: ed25519
