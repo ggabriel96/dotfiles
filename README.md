@@ -9,3 +9,13 @@ So be sure to know what you're doing!
 
 By the way, I will personally mainly support Fedora (currently on 33).
 However, Pop OS might be added eventually.
+
+## Getting started
+
+Replace `/path/to/dotfiles` in the snippet below with the path to where you cloned this repository.
+
+```sh
+pip install ansible  # run it with system python, with virtual environments disabled
+ansible-galaxy collection install community.general
+ansible-playbook -K /path/to/dotfiles/ansible/configure-desktop.yml
+```
