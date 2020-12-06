@@ -23,6 +23,11 @@ alias gst="git status"
 alias dps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Ports}}'"
 alias dcu="docker-compose up --abort-on-container-exit"
 
+# https://wiki.archlinux.org/index.php/GNOME/Keyring#Terminal_applications
+if test "$DESKTOP_SESSION" = "sway"
+    set -x (gnome-keyring-daemon --start | string split "=")
+end
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 eval "$HOME/miniconda3/bin/conda" "shell.fish" "hook" $argv | source
