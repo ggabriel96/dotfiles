@@ -1,6 +1,6 @@
 ---
 - name: Install Sway and related packages
-  hosts: Fedora
+  hosts: distro_Fedora
   become: true
   tags:
     - sway

@@ -1,6 +1,6 @@
 ---
 - name: Install Docker and Compose
-  hosts: Fedora
+  hosts: distro_Fedora
   become: true
   tags:
     - dev

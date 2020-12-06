@@ -1,10 +1,16 @@
 ---
 - name: Learn about localhost
   hosts: localhost
+  tags:
+    - always
   tasks:
+    - ansible.builtin.debug:
+        msg: Running on {{ ansible_facts['distribution'] }}
+        verbosity: 0
+
     - name: Classify hosts depending on their OS distribution
-      group_by:
-        key: "{{ ansible_facts['distribution'] }}"
+      ansible.builtin.group_by:
+        key: distro_{{ ansible_facts['distribution'] }}
 
 - import_playbook: packages.yml
 - import_playbook: docker.yml

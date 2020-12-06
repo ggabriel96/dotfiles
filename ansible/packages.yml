@@ -1,6 +1,6 @@
 ---
 - name: Install general packages
-  hosts: Fedora
+  hosts: distro_Fedora
   become: true
   tags:
     - packages
@@ -67,7 +67,7 @@
         state: absent
 
 - name: Install Fonts
-  hosts: Fedora
+  hosts: distro_Fedora
   become: true
   tags:
     - fonts
@@ -120,7 +120,7 @@
         state: absent
 
 - name: Setup Flatpak and install packages
-  hosts: Fedora
+  hosts: distro_Fedora
   tags:
     - flatpak
     - package-managers
@@ -211,7 +211,7 @@
         state: absent
 
 - name: Install Zoom
-  hosts: Fedora
+  hosts: distro_Fedora
   become: true
   tags:
     - meeting
