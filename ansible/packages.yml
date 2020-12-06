@@ -127,22 +127,25 @@
     - packages
   tasks:
     - name: Add Flathub repository
-      ansible.builtin.command:
-        argv:
-          - flatpak
-          - remote-add
-          - --if-not-exists
-          - flathub
-          - https://flathub.org/repo/flathub.flatpakrepo
-    - name: Install packages
-      ansible.builtin.command:
-        argv:
-          - flatpak
-          - install
-          - flathub
-          - -y
-          - com.dropbox.Client
-          - com.github.calo001.fondo
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        method: system
+        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
+    - name: Install Dropbox
+      community.general.flatpak:
+        name: com.dropbox.Client
+        remote: flathub
+        method: system
+        state: present
+
+    - name: Install Fondo
+      community.general.flatpak:
+        name: com.github.calo001.fondo
+        remote: flathub
+        method: system
+        state: present
 
 - name: Setup Snap and install packages
   hosts: localhost
