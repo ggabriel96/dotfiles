@@ -143,11 +143,9 @@
           - -y
           - com.dropbox.Client
           - com.github.calo001.fondo
-          - com.spotify.Client
-          - org.videolan.VLC
 
-- name: Setup Snap
-  hosts: Fedora
+- name: Setup Snap and install packages
+  hosts: localhost
   become: true
   tags:
     - package-managers
@@ -157,44 +155,32 @@
     - ansible.builtin.dnf:
         name:
           - snapd
+      when: ansible_facts["distribution"] == "Fedora"
 
     - name: Symlink
       ansible.builtin.file:
         src: /var/lib/snapd/snap
         dest: /snap
         state: link
+      when: ansible_facts["distribution"] == "Fedora"
 
-# https://code.visualstudio.com/docs/setup/linux#_rhel-fedora-and-centos-based-distributions
-- name: Install VS Code
-  hosts: Fedora
-  become: true
-  tags:
-    - dev
-    - editors
-    - packages
-  tasks:
-    - name: Add GPG key
-      ansible.builtin.rpm_key:
-        key: https://packages.microsoft.com/keys/microsoft.asc
+    - name: Install packages
+      community.general.snap:
+        classic: no
         state: present
+        channel: stable
+        name:
+          - spotify
+          - vlc
 
-    - name: Setup repository
-      shell:
-        cmd: |
-          cat <<- EOF > /etc/yum.repos.d/vscode.repo
-          [code]
-          name=Visual Studio Code
-          baseurl=https://packages.microsoft.com/yumrepos/vscode
-          enabled=1
-          gpgcheck=1
-          gpgkey=https://packages.microsoft.com/keys/microsoft.asc
-          EOF
-        creates: /etc/yum.repos.d/vscode.repo
-
-    - ansible.builtin.dnf:
+    - name: Install packages requiring classic confinement
+      community.general.snap:
+        classic: yes
+        state: present
+        channel: stable
         name:
           - code
-        state: latest
+          - slack
 
 - name: Install SpaceVim
   hosts: localhost
