@@ -11,11 +11,6 @@ if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
 fi
 export PATH
 
-# https://wiki.archlinux.org/index.php/Fish#Setting_fish_as_interactive_shell_only
-if [[ $(ps --no-header --pid=$PPID --format=cmd) != "fish" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
-	exec fish
-fi
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$("${HOME}/miniconda3/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
@@ -30,3 +25,8 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# https://wiki.archlinux.org/index.php/Fish#Setting_fish_as_interactive_shell_only
+if [[ $(ps --no-header --pid=$PPID --format=cmd) != "fish" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
+	exec fish
+fi
