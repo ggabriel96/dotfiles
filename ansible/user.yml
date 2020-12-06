@@ -29,12 +29,16 @@
     - shell
     - sway
   tasks:
-    - name: Link .bashrc
+    - name: Link files to $HOME
       ansible.builtin.file:
-        src: "{{ playbook_dir }}/../home/.bashrc"
-        dest: "{{ ansible_env.HOME }}/.bashrc"
+        src: "{{ playbook_dir }}/../home/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/{{ item }}"
         state: link
-    - ansible.builtin.file:
+      loop:
+        - .bash_profile
+        - .bashrc
+    - name: Link files to $HOME/.config/
+      ansible.builtin.file:
         src: "{{ playbook_dir }}/../home/.config/{{ item }}"
         dest: "{{ ansible_env.HOME }}/.config/{{ item }}"
         state: link
