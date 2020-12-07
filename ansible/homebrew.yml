@@ -76,3 +76,15 @@
           - "{{ install_path }}/bin/brew"
           - install
           - font-fontawesome
+
+    - name: Link fonts directory
+      ansible.builtin.file:
+        src: "{{ install_path }}/share/fonts"
+        dest: "{{ ansible_env.HOME }}/.local/share/fonts/homebrew"
+        state: link
+
+    - name: Update fonts cache
+      ansible.builtin.command:
+        argv:
+          - fc-cache
+          - -fv
