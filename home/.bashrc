@@ -26,6 +26,10 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+if [ -e "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]; then
+    . "${HOME}/.nix-profile/etc/profile.d/nix.sh"
+fi
+
 # https://wiki.archlinux.org/index.php/Fish#Setting_fish_as_interactive_shell_only
 if [[ $(ps --no-header --pid=$PPID --format=cmd) != "fish" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
 	exec fish
