@@ -73,13 +73,6 @@ bindsym $launch+Return exec $term
 # | Workspaces |
 # +------------+
 
-# Drag floating windows by holding down $super and left mouse button.
-# Resize them with right mouse button + $super.
-# Despite the name, also works for non-floating windows.
-# Change normal to inverse to use left mouse button for resizing and right
-# mouse button for dragging.
-floating_modifier $lnav normal
-
 bindsym $rnav+w workspace Web
 bindsym $rnav+$mov+w move container to workspace Web
 
@@ -116,6 +109,12 @@ bindsym $rnav+$mov+0 move container to workspace 10
 # +--------+
 # | Layout |
 # +--------+
+
+# Drag floating windows with left mouse button.
+# Resize them with right mouse button.
+# Despite the name, also works for non-floating windows.
+# Change `normal` to `inverse` to use left mouse button for resizing and right mouse button for dragging.
+floating_modifier $launch normal
 
 # You can "split" the current object of your focus
 # splith cuts vertically so it grows horizontally (windows as columns)
