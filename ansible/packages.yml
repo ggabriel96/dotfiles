@@ -147,6 +147,13 @@
         method: system
         state: present
 
+    - name: Install VLC
+      community.general.flatpak:
+        name: org.videolan.VLC
+        remote: flathub
+        method: system
+        state: present
+
 - name: Setup Snap and install packages
   hosts: localhost
   become: true
@@ -174,7 +181,6 @@
         channel: stable
         name:
           - spotify
-          - vlc
 
     - name: Install packages requiring classic confinement
       community.general.snap:
