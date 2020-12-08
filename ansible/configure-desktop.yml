@@ -16,4 +16,4 @@
 - import_playbook: docker.yml
 - import_playbook: user.yml
 - import_playbook: sway.yml
-# - import_playbook: homebrew.yml
+- import_playbook: homebrew.yml
