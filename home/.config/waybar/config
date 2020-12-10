@@ -49,6 +49,10 @@
     },
     "temperature": {
         "critical-threshold": 80,
+        // zone based on output of `cat /sys/class/thermal/thermal_zone*/type`
+        // choosing the one corresponding to `x86_pkg_temp`
+        "thermal-zone": 10,
+        "tooltip": true,
         "format": "{icon} {temperatureC}°C",
         "format-icons": [
             "",
