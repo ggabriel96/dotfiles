@@ -28,10 +28,9 @@ if test "$DESKTOP_SESSION" = "sway"
     set -x (gnome-keyring-daemon --start | string split "=")
 end
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-eval "$HOME/miniconda3/bin/conda" "shell.fish" "hook" $argv | source
-# <<< conda initialize <<<
+if test -f "$HOME/miniconda3/bin/conda"
+    eval "$HOME/miniconda3/bin/conda" "shell.fish" "hook" $argv | source
+end
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]; . "$HOME/google-cloud-sdk/path.fish.inc"; end
