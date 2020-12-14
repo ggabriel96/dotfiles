@@ -16,6 +16,6 @@ Replace `/path/to/dotfiles` in the snippet below with the path to where you clon
 
 ```sh
 pip install ansible  # run it with system python, with virtual environments disabled
-ansible-galaxy collection install community.general
+ansible-galaxy collection install ansible.posix community.general
 ansible-playbook -K /path/to/dotfiles/ansible/configure-desktop.yml
 ```

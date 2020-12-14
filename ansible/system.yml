@@ -1,0 +1,14 @@
+---
+- name: Configure sysctl settings
+  hosts: localhost
+  become: true
+  tags:
+    - dev
+    - sysctl
+    - system
+  tasks:
+    - ansible.posix.sysctl:
+        name: fs.inotify.max_user_watches
+        value: "524288"
+        reload: yes
+        state: present
