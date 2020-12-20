@@ -67,7 +67,7 @@
         state: absent
 
 - name: Install Fonts
-  hosts: distro_Fedora
+  hosts: localhost
   become: true
   tags:
     - fonts
@@ -76,12 +76,18 @@
     - ansible.builtin.dnf:
         name:
           - fira-code-fonts
-          - fontawesome-fonts
           - google-noto-sans-fonts
           - google-noto-serif-fonts
           - google-noto-emoji-fonts
           - google-noto-emoji-color-fonts
         state: latest
+      when: ansible_facts["distribution"] == "Fedora"
+    - ansible.builtin.apt:
+        name:
+          - fonts-firacode
+          - fonts-noto
+        state: latest
+      when: ansible_facts["distribution"] == "Ubuntu"
 
 - name: Install Google Cloud SDK
   hosts: localhost
