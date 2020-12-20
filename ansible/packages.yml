@@ -175,6 +175,7 @@
     - packages
   tasks:
     - name: Install Flatpak
+      become: true
       ansible.builtin.apt:
         name:
           - flatpak
