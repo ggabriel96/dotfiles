@@ -1,11 +1,11 @@
 ---
-- name: Install general packages
+- name: Install general packages (Fedora)
   hosts: distro_Fedora
   become: true
   tags:
     - packages
   tasks:
-    - name: DNF update all
+    - name: Update all
       ansible.builtin.dnf:
         name: "*"
         state: latest
@@ -28,6 +28,48 @@
 
     - name: Clean up
       ansible.builtin.dnf:
+        autoremove: yes
+
+- name: Install general packages (Ubuntu)
+  hosts: distro_Ubuntu
+  become: true
+  tags:
+    - packages
+  tasks:
+    - name: Update all
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+
+    - name: Add fish shell repository
+      ansible.builtin.apt_repository:
+        repo: ppa:fish-shell/release-3
+        codename: focal
+        state: present
+        update_cache: yes
+        validate_certs: yes
+
+    - name: Install general packages
+      ansible.builtin.apt:
+        name:
+          - apparmor
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - fish
+          - git
+          - gnupg-agent
+          - htop
+          - make
+          - neovim
+          - software-properties-common
+          - vlc
+          - zsh
+        state: latest
+
+    - name: Clean up
+      ansible.builtin.apt:
+        autoclean: yes
         autoremove: yes
 
 - name: Install Miniconda
