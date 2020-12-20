@@ -90,3 +90,28 @@
         groups: docker
         append: yes
       ignore_errors: yes
+
+- name: Install Docker Compose (Ubuntu)
+  hosts: distro_Ubuntu
+  vars:
+    compose_version: 1.27.4
+  tags:
+    - dev
+    - docker
+    - docker-compose
+  tasks:
+    - ansible.builtin.get_url:
+        url: https://github.com/docker/compose/releases/download/{{ compose_version }}/docker-compose-Linux-x86_64
+        dest: "{{ ansible_env.HOME }}/.local/bin/docker-compose"
+        mode: "0755"
+
+    - name: Create Bash completion directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/bash-completion/completions/"
+        state: directory
+        mode: "0755"
+
+    - name: Download Bash completion script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/docker/compose/{{ compose_version }}/contrib/completion/bash/docker-compose
+        dest: "{{ ansible_env.HOME }}/.local/share/bash-completion/completions/docker-compose"
