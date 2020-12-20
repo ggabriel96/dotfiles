@@ -49,7 +49,7 @@
         append: yes
       ignore_errors: yes
 
-- name: Install Docker and Compose (Ubuntu)
+- name: Install Docker (Ubuntu)
   hosts: distro_Ubuntu
   become: true
   tags:
