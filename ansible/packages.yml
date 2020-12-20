@@ -126,12 +126,19 @@
         state: absent
 
 - name: Setup Flatpak and install packages
-  hosts: distro_Fedora
+  hosts: localhost
   tags:
     - flatpak
     - package-managers
     - packages
   tasks:
+    - name: Install Flatpak
+      ansible.builtin.apt:
+        name:
+          - flatpak
+        state: latest
+      when: ansible_facts["distribution"] == "Ubuntu"
+
     - name: Add Flathub repository
       community.general.flatpak_remote:
         name: flathub
