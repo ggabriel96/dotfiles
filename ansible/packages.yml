@@ -52,7 +52,7 @@
     - name: Install general packages
       ansible.builtin.apt:
         name:
-          - apparmor
+          - apparmor-utils
           - apt-transport-https
           - ca-certificates
           - curl
