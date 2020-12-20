@@ -19,7 +19,7 @@
     - name: Change shell
       become: true
       ansible.builtin.user:
-        name: "{{ ansible_env.USERNAME }}"
+        name: "{{ ansible_env.USER }}"
         shell: "{{ shell_path.stdout }}"
 
 - name: Link config files
@@ -61,7 +61,7 @@
     - user
   tasks:
     - ansible.builtin.user:
-        name: "{{ ansible_env.USERNAME }}"
+        name: "{{ ansible_env.USER }}"
         generate_ssh_key: yes
         ssh_key_type: "{{ ssh_key_type }}"
         ssh_key_file: "{{ ssh_key_file }}"
