@@ -1,5 +1,5 @@
 ---
-- name: Install Docker and Compose
+- name: Install Docker and Compose (Fedora)
   hosts: distro_Fedora
   become: true
   tags:
@@ -34,6 +34,48 @@
         name:
           - moby-engine
           - docker-compose
+        state: latest
+
+    - name: Enable docker service
+      ansible.builtin.systemd:
+        name: docker
+        enabled: yes
+        masked: no
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ ansible_env.USERNAME }}"
+        groups: docker
+        append: yes
+      ignore_errors: yes
+
+- name: Install Docker and Compose (Ubuntu)
+  hosts: distro_Ubuntu
+  become: true
+  tags:
+    - dev
+    - docker
+  tasks:
+    - name: Install GPG key
+      ansible.builtin.apt_key:
+        keyserver: https://download.docker.com/linux/ubuntu/gpg
+        id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+        state: present
+
+    - name: Add repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
+        filename: docker
+        state: present
+        update_cache: yes
+        validate_certs: yes
+
+    - name: Install
+      ansible.builtin.apt:
+        name:
+          - containerd.io
+          - docker-ce
+          - docker-ce-cli
         state: latest
 
     - name: Enable docker service
