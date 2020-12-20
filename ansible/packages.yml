@@ -183,6 +183,7 @@
       when: ansible_facts["distribution"] == "Ubuntu"
 
     - name: Add Flathub repository
+      become: true
       community.general.flatpak_remote:
         name: flathub
         state: present
