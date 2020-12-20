@@ -56,7 +56,7 @@
     - dev
     - docker
   tasks:
-    - name: Install GPG key
+    - name: Add GPG key
       ansible.builtin.apt_key:
         keyserver: https://download.docker.com/linux/ubuntu/gpg
         id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
