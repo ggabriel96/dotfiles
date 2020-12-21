@@ -40,13 +40,13 @@
       ansible.builtin.apt:
         name: "*"
         state: latest
+        update_cache: yes
 
     - name: Add fish shell repository
       ansible.builtin.apt_repository:
         repo: ppa:fish-shell/release-3
         codename: focal
         state: present
-        update_cache: yes
         validate_certs: yes
 
     - name: Install general packages
@@ -65,6 +65,7 @@
           - software-properties-common
           - vlc
           - zsh
+        update_cache: yes
         state: latest
 
     - name: Clean up
@@ -256,6 +257,7 @@
     - dev
     - editors
     - packages
+    - vim
   tasks:
     - name: Download
       ansible.builtin.get_url:

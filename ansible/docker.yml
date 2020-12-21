@@ -67,7 +67,6 @@
         repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable
         filename: docker
         state: present
-        update_cache: yes
         validate_certs: yes
 
     - name: Install
@@ -76,6 +75,7 @@
           - containerd.io
           - docker-ce
           - docker-ce-cli
+        update_cache: yes
         state: latest
 
     - name: Enable docker service
