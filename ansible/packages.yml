@@ -13,6 +13,7 @@
     - name: Install general packages
       ansible.builtin.dnf:
         name:
+          - bash-completion
           - chromium
           - clang
           - dnf-plugins-core
@@ -54,6 +55,7 @@
         name:
           - apparmor-utils
           - apt-transport-https
+          - bash-completion
           - ca-certificates
           - curl
           - fish
