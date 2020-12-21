@@ -227,6 +227,7 @@
     - ansible.builtin.dnf:
         name:
           - snapd
+        state: latest
       when: ansible_facts["distribution"] == "Fedora"
 
     - name: Symlink
@@ -235,6 +236,13 @@
         dest: /snap
         state: link
       when: ansible_facts["distribution"] == "Fedora"
+
+    - name: Ensure snapd is installed (Ubuntu)
+      ansible.builtin.apt:
+        name:
+          - snapd
+        state: latest
+      when: ansible_facts["distribution"] == "Ubuntu"
 
     - name: Install packages
       community.general.snap:
