@@ -8,7 +8,7 @@
     - package-managers
     - sway
   tasks:
-    - name: Install dependencies (Fedora family)
+    - name: Install dependencies (Fedora)
       become: true
       ansible.builtin.dnf:
         name:
@@ -19,7 +19,7 @@
           - "@Development Tools"
       when: ansible_facts["distribution"] == "Fedora"
 
-    - name: Install dependencies (Ubuntu family)
+    - name: Install dependencies (Ubuntu)
       become: true
       ansible.builtin.apt:
         name:
