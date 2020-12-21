@@ -272,6 +272,13 @@
         argv:
           - /tmp/spacevim-install.sh
 
+    - name: Make vimproc
+      ansible.builtin.command:
+        argv:
+          - make
+          - -C
+          - "{{ ansible_env.HOME }}/.SpaceVim/bundle/vimproc.vim/"
+
     - name: Clean up
       ansible.builtin.file:
         path: /tmp/spacevim-install.sh
