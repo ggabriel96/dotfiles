@@ -273,13 +273,14 @@
         path: /tmp/spacevim-install.sh
         state: absent
 
-- name: Install Zoom
+- name: Install Zoom (Fedora)
   hosts: distro_Fedora
   become: true
   tags:
     - meeting
     - packages
     - video
+    - zoom
   tasks:
     - name: Add GPG key
       ansible.builtin.rpm_key:
@@ -300,4 +301,34 @@
     - name: Clean up
       ansible.builtin.file:
         path: /tmp/zoom.rpm
+        state: absent
+
+- name: Install Zoom (Ubuntu)
+  hosts: distro_Ubuntu
+  become: true
+  tags:
+    - meeting
+    - packages
+    - video
+    - zoom
+  tasks:
+    - name: Add GPG key
+      ansible.builtin.apt_key:
+        keyserver: https://zoom.us/linux/download/pubkey
+        id: 396060CADD8A75220BFCB369B903BF1861A7C71D
+        state: present
+
+    - name: Download package
+      ansible.builtin.get_url:
+        url: https://zoom.us/client/latest/zoom_amd64.deb
+        dest: /tmp/zoom.deb
+
+    - name: Install
+      ansible.builtin.apt:
+        deb: /tmp/zoom.deb
+        state: present
+
+    - name: Clean up
+      ansible.builtin.file:
+        path: /tmp/zoom.deb
         state: absent
