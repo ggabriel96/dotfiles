@@ -1,8 +1,9 @@
 ---
-- name: Install general packages (Fedora)
+- name: Install system packages (Fedora)
   hosts: distro_Fedora
   become: true
   tags:
+    - system-packages
     - packages
   tasks:
     - name: Update all
@@ -10,7 +11,7 @@
         name: "*"
         state: latest
 
-    - name: Install general packages
+    - name: Install system packages
       ansible.builtin.dnf:
         name:
           - bash-completion
@@ -31,10 +32,11 @@
       ansible.builtin.dnf:
         autoremove: yes
 
-- name: Install general packages (Ubuntu)
+- name: Install system packages (Ubuntu)
   hosts: distro_Ubuntu
   become: true
   tags:
+    - system-packages
     - packages
   tasks:
     - name: Update all
@@ -50,7 +52,7 @@
         state: present
         validate_certs: yes
 
-    - name: Install general packages
+    - name: Install system packages
       ansible.builtin.apt:
         name:
           - apparmor-utils
