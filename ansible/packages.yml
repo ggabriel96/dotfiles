@@ -217,6 +217,7 @@
         remote: flathub
         method: system
         state: present
+      when: ansible_facts["distribution"] == "Fedora"
 
 - name: Setup Snap and install packages
   hosts: localhost
