@@ -33,7 +33,9 @@
         autoremove: yes
 
 - name: Install system packages (Ubuntu)
-  hosts: distro_Ubuntu
+  hosts:
+    - distro_Ubuntu
+    - distro_Pop!_OS
   become: true
   tags:
     - system-packages
@@ -134,7 +136,7 @@
           - fonts-firacode
           - fonts-noto
         state: latest
-      when: ansible_facts["distribution"] == "Ubuntu"
+      when: ansible_facts["distribution"] == "Ubuntu" or ansible_facts["distribution"] == "Pop!_OS"
 
 - name: Install Google Cloud SDK
   hosts: localhost
@@ -242,7 +244,7 @@
         name:
           - snapd
         state: latest
-      when: ansible_facts["distribution"] == "Ubuntu"
+      when: ansible_facts["distribution"] == "Ubuntu" or ansible_facts["distribution"] == "Pop!_OS"
 
     - name: Install packages
       community.general.snap:
@@ -325,7 +327,9 @@
         state: absent
 
 - name: Install Zoom (Ubuntu)
-  hosts: distro_Ubuntu
+  hosts:
+    - distro_Ubuntu
+    - distro_Pop!_OS
   become: true
   tags:
     - meeting
