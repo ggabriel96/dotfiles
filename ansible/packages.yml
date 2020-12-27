@@ -79,6 +79,26 @@
         autoclean: yes
         autoremove: yes
 
+- name: Install extra system packages (Pop!_OS)
+  hosts: distro_Pop!_OS
+  become: true
+  tags:
+    - system-packages
+    - packages
+    - pop
+  tasks:
+    - ansible.builtin.apt:
+        name:
+          - atom
+          - chromium
+        update_cache: yes
+        state: latest
+
+    - name: Clean up
+      ansible.builtin.apt:
+        autoclean: yes
+        autoremove: yes
+
 - name: Install Miniconda
   hosts: localhost
   vars_files:
