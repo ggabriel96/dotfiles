@@ -50,7 +50,9 @@
       ignore_errors: yes
 
 - name: Install Docker (Ubuntu)
-  hosts: distro_Ubuntu
+  hosts:
+    - distro_Ubuntu
+    - distro_Pop!_OS
   become: true
   tags:
     - dev
@@ -92,7 +94,9 @@
       ignore_errors: yes
 
 - name: Install Docker Compose (Ubuntu)
-  hosts: distro_Ubuntu
+  hosts:
+    - distro_Ubuntu
+    - distro_Pop!_OS
   vars:
     compose_version: 1.27.4
   tags:
