@@ -1,18 +1,20 @@
 ---
-- name: Install general packages
+- name: Install system packages (Fedora)
   hosts: distro_Fedora
   become: true
   tags:
+    - system-packages
     - packages
   tasks:
-    - name: DNF update all
+    - name: Update all
       ansible.builtin.dnf:
         name: "*"
         state: latest
 
-    - name: Install general packages
+    - name: Install system packages
       ansible.builtin.dnf:
         name:
+          - bash-completion
           - chromium
           - clang
           - dnf-plugins-core
@@ -28,6 +30,73 @@
 
     - name: Clean up
       ansible.builtin.dnf:
+        autoremove: yes
+
+- name: Install system packages (Ubuntu)
+  hosts:
+    - distro_Ubuntu
+    - distro_Pop!_OS
+  become: true
+  tags:
+    - system-packages
+    - packages
+  tasks:
+    - name: Update all
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+
+    - name: Add fish shell repository
+      ansible.builtin.apt_repository:
+        repo: ppa:fish-shell/release-3
+        codename: focal
+        state: present
+        validate_certs: yes
+
+    - name: Install system packages
+      ansible.builtin.apt:
+        name:
+          - apparmor-utils
+          - apt-transport-https
+          - bash-completion
+          - ca-certificates
+          - curl
+          - fish
+          - git
+          - gnupg-agent
+          - htop
+          - make
+          - neovim
+          - software-properties-common
+          - vlc
+          - zsh
+        update_cache: yes
+        state: latest
+
+    - name: Clean up
+      ansible.builtin.apt:
+        autoclean: yes
+        autoremove: yes
+
+- name: Install extra system packages (Pop!_OS)
+  hosts: distro_Pop!_OS
+  become: true
+  tags:
+    - system-packages
+    - packages
+    - pop
+  tasks:
+    - ansible.builtin.apt:
+        name:
+          - atom
+          - chromium
+        update_cache: yes
+        state: latest
+
+    - name: Clean up
+      ansible.builtin.apt:
+        autoclean: yes
         autoremove: yes
 
 - name: Install Miniconda
@@ -67,7 +136,7 @@
         state: absent
 
 - name: Install Fonts
-  hosts: distro_Fedora
+  hosts: localhost
   become: true
   tags:
     - fonts
@@ -76,12 +145,18 @@
     - ansible.builtin.dnf:
         name:
           - fira-code-fonts
-          - fontawesome-fonts
           - google-noto-sans-fonts
           - google-noto-serif-fonts
           - google-noto-emoji-fonts
           - google-noto-emoji-color-fonts
         state: latest
+      when: ansible_facts["distribution"] == "Fedora"
+    - ansible.builtin.apt:
+        name:
+          - fonts-firacode
+          - fonts-noto
+        state: latest
+      when: ansible_facts["distribution"] == "Ubuntu" or ansible_facts["distribution"] == "Pop!_OS"
 
 - name: Install Google Cloud SDK
   hosts: localhost
@@ -120,13 +195,22 @@
         state: absent
 
 - name: Setup Flatpak and install packages
-  hosts: distro_Fedora
+  hosts: localhost
   tags:
     - flatpak
     - package-managers
     - packages
   tasks:
+    - name: Install Flatpak
+      become: true
+      ansible.builtin.apt:
+        name:
+          - flatpak
+        state: latest
+      when: ansible_facts["distribution"] == "Ubuntu"
+
     - name: Add Flathub repository
+      become: true
       community.general.flatpak_remote:
         name: flathub
         state: present
@@ -153,6 +237,7 @@
         remote: flathub
         method: system
         state: present
+      when: ansible_facts["distribution"] == "Fedora"
 
 - name: Setup Snap and install packages
   hosts: localhost
@@ -165,6 +250,7 @@
     - ansible.builtin.dnf:
         name:
           - snapd
+        state: latest
       when: ansible_facts["distribution"] == "Fedora"
 
     - name: Symlink
@@ -173,6 +259,13 @@
         dest: /snap
         state: link
       when: ansible_facts["distribution"] == "Fedora"
+
+    - name: Ensure snapd is installed (Ubuntu)
+      ansible.builtin.apt:
+        name:
+          - snapd
+        state: latest
+      when: ansible_facts["distribution"] == "Ubuntu" or ansible_facts["distribution"] == "Pop!_OS"
 
     - name: Install packages
       community.general.snap:
@@ -199,6 +292,7 @@
     - dev
     - editors
     - packages
+    - vim
   tasks:
     - name: Download
       ansible.builtin.get_url:
@@ -211,18 +305,26 @@
         argv:
           - /tmp/spacevim-install.sh
 
+    - name: Make vimproc
+      ansible.builtin.command:
+        argv:
+          - make
+          - -C
+          - "{{ ansible_env.HOME }}/.SpaceVim/bundle/vimproc.vim/"
+
     - name: Clean up
       ansible.builtin.file:
         path: /tmp/spacevim-install.sh
         state: absent
 
-- name: Install Zoom
+- name: Install Zoom (Fedora)
   hosts: distro_Fedora
   become: true
   tags:
     - meeting
     - packages
     - video
+    - zoom
   tasks:
     - name: Add GPG key
       ansible.builtin.rpm_key:
@@ -243,4 +345,36 @@
     - name: Clean up
       ansible.builtin.file:
         path: /tmp/zoom.rpm
+        state: absent
+
+- name: Install Zoom (Ubuntu)
+  hosts:
+    - distro_Ubuntu
+    - distro_Pop!_OS
+  become: true
+  tags:
+    - meeting
+    - packages
+    - video
+    - zoom
+  tasks:
+    - name: Add GPG key
+      ansible.builtin.apt_key:
+        keyserver: https://zoom.us/linux/download/pubkey
+        id: 396060CADD8A75220BFCB369B903BF1861A7C71D
+        state: present
+
+    - name: Download package
+      ansible.builtin.get_url:
+        url: https://zoom.us/client/latest/zoom_amd64.deb
+        dest: /tmp/zoom.deb
+
+    - name: Install
+      ansible.builtin.apt:
+        deb: /tmp/zoom.deb
+        state: present
+
+    - name: Clean up
+      ansible.builtin.file:
+        path: /tmp/zoom.deb
         state: absent
