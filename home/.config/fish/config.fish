@@ -12,6 +12,9 @@ alias dps="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.Ports}}'"
 alias act="conda activate"
 alias deact="conda deactivate"
 alias new-env="conda env create -f environment.yml"
+alias k="kubectl"
+alias kctx="kubectx"
+alias kns="kubens"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]; . "$HOME/google-cloud-sdk/path.fish.inc"; end
