@@ -3,7 +3,7 @@ set -gx UID (id -u)
 set -gx GID (id -g)
 set -gx CURRENT_UID "$UID:$GID"
 
-set -gx EDITOR kak
+set -gx EDITOR vim
 set -gx PATH "$PATH:$HOME/.local/bin/"
 
 # Aliases
@@ -15,9 +15,6 @@ alias new-env="conda env create -f environment.yml"
 alias k="kubectl"
 alias kctx="kubectx"
 alias kns="kubens"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]; . "$HOME/google-cloud-sdk/path.fish.inc"; end
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
