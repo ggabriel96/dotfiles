@@ -54,6 +54,6 @@ unset __mamba_setup
 # <<< mamba initialize <<<
 
 # https://wiki.archlinux.org/index.php/Fish#Setting_fish_as_interactive_shell_only
-if [[ $(ps -o command= -p $PPID) != "fish" ]] && [[ -z "$BASH_EXECUTION_STRING" ]]; then
+if [[ -z "$BASH_EXECUTION_STRING" && -z "$ZSH_EXECUTION_STRING" ]] && [[ $(ps -o command= -p $PPID) != "fish" ]]; then
 	exec fish
 fi
